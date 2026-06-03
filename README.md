@@ -556,6 +556,217 @@ GET /api/v1/audit-logs/export/?format=excel
 
 ---
 
+## Sistema de Permisos y Usuarios
+
+### 🔐 ¿Cómo Funciona?
+
+La API implementa un sistema de permisos basado en dos tipos de usuarios:
+
+**Archivo de Configuración:** `api/permissions.py`
+
+```python
+class SoloAdminElimina(BasePermission):
+    def has_permission(self, request, view):
+        if not request.user.is_authenticated:
+            return False                      # Sin token = acceso denegado
+        if request.method == 'DELETE':
+            return request.user.is_staff      # DELETE solo para admin
+        return True                           # Otras operaciones para todos
+```
+
+### 👥 Tipos de Usuarios
+
+#### 🔑 **Superuser (Administrador)**
+
+| Propiedad | Valor |
+|-----------|-------|
+| **Username** | `admin` |
+| **Email** | `admin@rrhh.com` |
+| **Contraseña** | `Admin123456!` |
+| **is_staff** | ✅ True |
+| **is_superuser** | ✅ True |
+
+**Permisos:**
+- ✅ GET (Listar/Ver registros)
+- ✅ POST (Crear registros)
+- ✅ PUT (Editar registros)
+- ✅ DELETE (Eliminar registros)
+- ✅ Acceso al panel de administración (`/admin/`)
+
+#### 👤 **Usuario Normal**
+
+| Propiedad | Valor |
+|-----------|-------|
+| **Username** | `empleado` |
+| **Email** | `empleado@rrhh.com` |
+| **Contraseña** | `Usuario123456!` |
+| **is_staff** | ❌ False |
+| **is_superuser** | ❌ False |
+
+**Permisos:**
+- ✅ GET (Listar/Ver registros)
+- ✅ POST (Crear registros)
+- ✅ PUT (Editar registros)
+- ❌ DELETE (NO puede eliminar)
+- ❌ NO acceso al panel de administración
+
+### 📊 Tabla Comparativa
+
+| Operación | Usuario Normal | Superuser |
+|-----------|---|---|
+| GET (Listar) | ✅ Permitido | ✅ Permitido |
+| POST (Crear) | ✅ Permitido | ✅ Permitido |
+| PUT (Editar) | ✅ Permitido | ✅ Permitido |
+| DELETE (Eliminar) | ❌ **Prohibido (403)** | ✅ Permitido |
+| Admin Panel | ❌ Sin acceso | ✅ Acceso total |
+
+### 🧪 Ejemplos de Uso
+
+**Superuser intentando eliminar:**
+```bash
+DELETE /api/v1/empleados/1/
+Authorization: Bearer <token_admin>
+✅ 204 No Content (Eliminado exitosamente)
+```
+
+**Usuario Normal intentando eliminar:**
+```bash
+DELETE /api/v1/empleados/1/
+Authorization: Bearer <token_empleado>
+❌ 403 Forbidden
+{
+  "detail": "You do not have permission to perform this action."
+}
+```
+
+**Sin token:**
+```bash
+GET /api/v1/empleados/
+❌ 401 Unauthorized
+{
+  "detail": "Authentication credentials were not provided."
+}
+```
+
+---
+
+## Gestión de Usuarios
+
+### 📝 Crear Usuarios con Script
+
+La forma más simple es usar el script `create_users.py`:
+
+#### Paso 1: Ejecutar el Script
+
+```bash
+cd Gestion_Recursos_Humanos_API_DJango
+python create_users.py
+```
+
+#### Paso 2: Verificar Output
+
+```
+✅ Superuser creado:
+   Username: admin
+   Email: admin@rrhh.com
+   Password: Admin123456!
+   is_staff: True
+   is_superuser: True
+
+✅ Usuario normal creado:
+   Username: empleado
+   Email: empleado@rrhh.com
+   Password: Usuario123456!
+   is_staff: False
+   is_superuser: False
+
+📋 Usuarios en el sistema:
+   🔑 Superuser - admin (admin@rrhh.com)
+   👤 Normal - empleado (empleado@rrhh.com)
+```
+
+#### ¿Qué Hace?
+
+El script `create_users.py`:
+1. ✅ Crea un superuser automáticamente
+2. ✅ Crea un usuario normal
+3. ✅ Asigna contraseñas seguras
+4. ✅ Configura los permisos correctamente
+5. ✅ Verifica si ya existen (evita duplicados)
+6. ✅ Muestra listado de usuarios
+
+### 🔄 Alternativas para Crear Usuarios
+
+#### Opción 2: Django Admin
+
+1. Ejecutar el servidor: `python manage.py runserver`
+2. Acceder a: `http://localhost:8000/admin/`
+3. Login con superuser
+4. Haz clic en "Users"
+5. Crea usuarios desde la interfaz
+
+#### Opción 3: Comando Interactive
+
+```bash
+# Crear superuser interactivo
+python manage.py createsuperuser
+
+# Crear usuario normal
+python manage.py shell
+>>> from django.contrib.auth.models import User
+>>> User.objects.create_user('username', 'email@example.com', 'password')
+```
+
+### 🔑 Login - Obtener Tokens JWT
+
+Después de crear usuarios, puedes autenticarte:
+
+**Superuser:**
+```bash
+POST /api/v1/auth/login/
+{
+  "username": "admin",
+  "password": "Admin123456!"
+}
+```
+
+**Usuario Normal:**
+```bash
+POST /api/v1/auth/login/
+{
+  "username": "empleado",
+  "password": "Usuario123456!"
+}
+```
+
+**Respuesta:**
+```json
+{
+  "success": true,
+  "message": "Login exitoso",
+  "data": {
+    "access": "eyJ0eXAiOiJKV1QiLCJhbGc...",
+    "refresh": "eyJ0eXAiOiJKV1QiLCJhbGc...",
+    "user": {
+      "id": 1,
+      "username": "admin",
+      "email": "admin@rrhh.com"
+    }
+  }
+}
+```
+
+### 📌 Usar Token en Requests
+
+Con el token obtenido, acceder a endpoints:
+
+```bash
+GET /api/v1/empleados/
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGc...
+```
+
+---
+
 ## Configuración Local
 
 ### Base de Datos PostgreSQL
@@ -617,7 +828,19 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
-### 6. Crear Superusuario
+### 6. Crear Usuarios
+
+**Forma Recomendada - Usar el script:**
+
+```bash
+python create_users.py
+```
+
+Esto crea automáticamente:
+- ✅ Superuser: `admin` / `Admin123456!`
+- ✅ Usuario Normal: `empleado` / `Usuario123456!`
+
+**Alternativa - Método interactivo:**
 
 ```bash
 python manage.py createsuperuser
@@ -626,7 +849,13 @@ python manage.py createsuperuser
 ### 7. Ejecutar el Servidor
 
 ```bash
-python run.py
+python manage.py runserver
+```
+
+O especificar puerto:
+
+```bash
+python manage.py runserver 0.0.0.0:8000
 ```
 
 ### 8. Acceder a la API
@@ -634,6 +863,8 @@ python run.py
 - **API:** http://localhost:8000/api/v1/
 - **Swagger:** http://localhost:8000/swagger/
 - **Admin:** http://localhost:8000/admin/
+- **Usuario Admin:** admin / Admin123456!
+- **Usuario Normal:** empleado / Usuario123456!
 
 ---
 
