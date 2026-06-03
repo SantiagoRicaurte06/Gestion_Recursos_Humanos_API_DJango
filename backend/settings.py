@@ -58,6 +58,7 @@ REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
         'api.renderers.StandardJSONRenderer',
     ],
+    'DEFAULT_PAGINATION_CLASS': 'api.pagination.StandardPagination',
 }
 
 MIDDLEWARE = [
