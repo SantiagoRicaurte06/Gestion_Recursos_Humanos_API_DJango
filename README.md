@@ -58,7 +58,6 @@ DELETE /api/v1/empleados/:id/                # Eliminar empleado (Soft Delete)
 
 ### Endpoints por Módulo
 
-**Catálogos:**
 - `/api/v1/generos/`
 - `/api/v1/estados_civiles/`
 - `/api/v1/tipos_documento/`
@@ -68,8 +67,6 @@ DELETE /api/v1/empleados/:id/                # Eliminar empleado (Soft Delete)
 - `/api/v1/modalidades_capacitacion/`
 - `/api/v1/tipos_evaluacion/`
 - `/api/v1/resultados_evaluacion/`
-
-**Entidades Principales:**
 - `/api/v1/departamentos/`
 - `/api/v1/cargos/`
 - `/api/v1/empleados/`
@@ -603,17 +600,14 @@ pip install -r requirements.txt
 Crear archivo `.env`:
 
 ```env
-DEBUG=True
-SECRET_KEY=tu-clave-secreta-aqui
-
-# PostgreSQL
-DB_ENGINE=django.db.backends.postgresql
-DB_NAME=rrhh_db
-DB_USER=postgres
-DB_PASSWORD=tu-contraseña
-DB_HOST=localhost
-DB_PORT=5432
-DB_SCHEMA=public
+API_PORT     = # Puerto en el que se ejecutará la API
+DEBUG        = # Habilita o deshabilita el modo de depuración (true/false)
+DB_NAME      = # Nombre de la base de datos
+DB_USER      = # Usuario de acceso a la base de datos
+DB_PASSWORD  = # Contraseña del usuario de la base de datos
+DB_HOST      = # Dirección IP o nombre del servidor de la base de datos
+DB_PORT      = # Puerto de conexión de la base de datos
+DB_SCHEMA    = # Nombre del esquema de la base de datos
 ```
 
 ### 5. Ejecutar Migraciones
@@ -632,7 +626,7 @@ python manage.py createsuperuser
 ### 7. Ejecutar el Servidor
 
 ```bash
-python manage.py runserver
+python run.py
 ```
 
 ### 8. Acceder a la API
@@ -665,8 +659,6 @@ http://localhost:8000/swagger/
 ### Seguridad
 ✅ Autenticación JWT
 ✅ Control de acceso
-✅ Contraseñas hasheadas
-✅ CSRF protection
 
 ### Auditoría
 ✅ Logging automático
@@ -686,31 +678,6 @@ http://localhost:8000/swagger/
 ✅ Excel
 ✅ Con filtros
 ✅ Auditoría exportable
-
----
-
-## Recomendaciones
-
-### Desarrollo
-
-```bash
-# Instalar herramientas
-pip install django-extensions black flake8
-
-# Formater código
-black api/ backend/
-
-# Verificar estilo
-flake8 api/ backend/
-```
-
-### Producción
-
-- Usar `gunicorn` en lugar de `runserver`
-- Configurar `DEBUG = False`
-- Usar `ALLOWED_HOSTS` apropiadamente
-- Configurar SSL/HTTPS
-- Usar `collectstatic`
 
 ---
 
@@ -734,5 +701,3 @@ Exportación: CSV / Excel
 Proyecto Jobsy - Gestión de Recursos Humanos
 
 ---
-
-**Última actualización:** Junio 2024
