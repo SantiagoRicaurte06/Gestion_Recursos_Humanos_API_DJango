@@ -9,7 +9,7 @@ schema_view = get_schema_view(
         title="API Gestión Recursos Humanos",
         default_version='v1',
         description="API para gestión de empleados, nómina, contratos, vacaciones y evaluaciones",
-        contact=openapi.Contact(email="admin@example.com"),
+        contact=openapi.Contact(email="santiagoricuarte@gmail.com"),
     ),
     public=True,
     permission_classes=(permissions.AllowAny,),
@@ -17,6 +17,6 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('api.urls')),
+    path('api/v1/', include('api.urls')),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='swagger-ui'),
 ]
