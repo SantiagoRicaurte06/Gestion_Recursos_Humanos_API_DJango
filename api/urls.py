@@ -7,6 +7,7 @@ from .views import (
     CargosViewSet, EmpleadosViewSet, ContratosViewSet, NominaViewSet,
     VacacionesViewSet, CapacitacionesViewSet, EvaluacionesViewSet
 )
+from .auth_views import login, refresh_token
 
 router = DefaultRouter()
 
@@ -29,5 +30,7 @@ router.register (r'capacitaciones', CapacitacionesViewSet)
 router.register (r'evaluaciones', EvaluacionesViewSet)
 
 urlpatterns = [
+    path('auth/login/', login, name='login'),
+    path('auth/refresh/', refresh_token, name='refresh-token'),
     path('', include(router.urls))
 ]
