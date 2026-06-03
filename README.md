@@ -93,11 +93,11 @@ http://localhost:8000/swagger/
 
 ### Características
 
-- ✅ Exploración de todos los endpoints
-- ✅ Pruebas directas de endpoints
-- ✅ Documentación automática de modelos
-- ✅ Ejemplos de respuestas
-- ✅ Autenticación JWT integrada
+- Exploración de todos los endpoints
+- Pruebas directas de endpoints
+- Documentación automática de modelos
+- Ejemplos de respuestas
+- Autenticación JWT integrada
 
 ### Ejemplo de Uso
 
@@ -120,12 +120,6 @@ Todos los endpoints incluyen el prefijo de versión en la URL:
 /api/v1/empleados/
 /api/v1/contratos/
 ```
-
-### Beneficios
-
-- ✅ Compatibilidad hacia atrás
-- ✅ Cambios sin afectar clientes existentes
-- ✅ Preparado para futuras versiones (v2, v3)
 
 ### Preparación para Futuras Versiones
 
@@ -309,15 +303,6 @@ GET /api/v1/empleados/
 # NO incluye registros con activo=false
 ```
 
-### Beneficios
-
-✅ Recuperabilidad de datos
-✅ Auditoría completa
-✅ Integridad referencial
-✅ Cumplimiento normativo
-
----
-
 ## Auditoría Automática
 
 ### Campos de Auditoría
@@ -409,12 +394,12 @@ POST /api/v1/auth/refresh/
 ```bash
 # Sin token
 GET /api/v1/empleados/
-❌ 401 Unauthorized
+401 Unauthorized
 
 # Con token válido
 GET /api/v1/empleados/
 Authorization: Bearer <token_valido>
-✅ Éxito
+Éxito
 ```
 
 ### Restricción por Usuario
@@ -558,101 +543,81 @@ GET /api/v1/audit-logs/export/?format=excel
 
 ## Sistema de Permisos y Usuarios
 
-### 🔐 ¿Cómo Funciona?
+### ¿Cómo Funciona?
 
 La API implementa un sistema de permisos basado en dos tipos de usuarios:
 
 **Archivo de Configuración:** `api/permissions.py`
 
-```python
-class SoloAdminElimina(BasePermission):
-    def has_permission(self, request, view):
-        if not request.user.is_authenticated:
-            return False                      # Sin token = acceso denegado
-        if request.method == 'DELETE':
-            return request.user.is_staff      # DELETE solo para admin
-        return True                           # Otras operaciones para todos
-```
+### Tipos de Usuarios
 
-### 👥 Tipos de Usuarios
-
-#### 🔑 **Superuser (Administrador)**
+####  **Superuser (Administrador)**
 
 | Propiedad | Valor |
 |-----------|-------|
 | **Username** | `admin` |
 | **Email** | `admin@rrhh.com` |
 | **Contraseña** | `Admin123456!` |
-| **is_staff** | ✅ True |
-| **is_superuser** | ✅ True |
+| **is_staff** |  True |
+| **is_superuser** |  True |
 
 **Permisos:**
-- ✅ GET (Listar/Ver registros)
-- ✅ POST (Crear registros)
-- ✅ PUT (Editar registros)
-- ✅ DELETE (Eliminar registros)
-- ✅ Acceso al panel de administración (`/admin/`)
+-  GET (Listar/Ver registros)
+-  POST (Crear registros)
+-  PUT (Editar registros)
+-  DELETE (Eliminar registros)
+-  Acceso al panel de administración (`/admin/`)
 
-#### 👤 **Usuario Normal**
+#### **Usuario Normal**
 
 | Propiedad | Valor |
 |-----------|-------|
 | **Username** | `empleado` |
 | **Email** | `empleado@rrhh.com` |
 | **Contraseña** | `Usuario123456!` |
-| **is_staff** | ❌ False |
-| **is_superuser** | ❌ False |
+| **is_staff** |  False |
+| **is_superuser** |  False |
 
 **Permisos:**
-- ✅ GET (Listar/Ver registros)
-- ✅ POST (Crear registros)
-- ✅ PUT (Editar registros)
-- ❌ DELETE (NO puede eliminar)
-- ❌ NO acceso al panel de administración
+-  GET (Listar/Ver registros)
+-  POST (Crear registros)
+-  PUT (Editar registros)
+-  DELETE (NO puede eliminar)
+-  NO acceso al panel de administración
 
 ### 📊 Tabla Comparativa
 
 | Operación | Usuario Normal | Superuser |
 |-----------|---|---|
-| GET (Listar) | ✅ Permitido | ✅ Permitido |
-| POST (Crear) | ✅ Permitido | ✅ Permitido |
-| PUT (Editar) | ✅ Permitido | ✅ Permitido |
-| DELETE (Eliminar) | ❌ **Prohibido (403)** | ✅ Permitido |
-| Admin Panel | ❌ Sin acceso | ✅ Acceso total |
+| GET (Listar) | Permitido | Permitido |
+| POST (Crear) | Permitido | Permitido |
+| PUT (Editar) | Permitido | Permitido |
+| DELETE (Eliminar) | **Prohibido (403)** | Permitido |
+| Admin Panel | Sin acceso | Acceso total |
 
-### 🧪 Ejemplos de Uso
+### Ejemplos de Uso
 
 **Superuser intentando eliminar:**
 ```bash
 DELETE /api/v1/empleados/1/
 Authorization: Bearer <token_admin>
-✅ 204 No Content (Eliminado exitosamente)
+204 No Content (Eliminado exitosamente)
 ```
 
 **Usuario Normal intentando eliminar:**
 ```bash
 DELETE /api/v1/empleados/1/
 Authorization: Bearer <token_empleado>
-❌ 403 Forbidden
+403 Forbidden
 {
   "detail": "You do not have permission to perform this action."
 }
-```
-
-**Sin token:**
-```bash
-GET /api/v1/empleados/
-❌ 401 Unauthorized
-{
-  "detail": "Authentication credentials were not provided."
-}
-```
 
 ---
 
 ## Gestión de Usuarios
 
-### 📝 Crear Usuarios con Script
+### Crear Usuarios con Script
 
 La forma más simple es usar el script `create_users.py`:
 
@@ -666,36 +631,36 @@ python create_users.py
 #### Paso 2: Verificar Output
 
 ```
-✅ Superuser creado:
+Superuser creado:
    Username: admin
    Email: admin@rrhh.com
    Password: Admin123456!
    is_staff: True
    is_superuser: True
 
-✅ Usuario normal creado:
+Usuario normal creado:
    Username: empleado
    Email: empleado@rrhh.com
    Password: Usuario123456!
    is_staff: False
    is_superuser: False
 
-📋 Usuarios en el sistema:
-   🔑 Superuser - admin (admin@rrhh.com)
-   👤 Normal - empleado (empleado@rrhh.com)
+Usuarios en el sistema:
+   Superuser - admin (admin@rrhh.com)
+   Normal - empleado (empleado@rrhh.com)
 ```
 
 #### ¿Qué Hace?
 
 El script `create_users.py`:
-1. ✅ Crea un superuser automáticamente
-2. ✅ Crea un usuario normal
-3. ✅ Asigna contraseñas seguras
-4. ✅ Configura los permisos correctamente
-5. ✅ Verifica si ya existen (evita duplicados)
-6. ✅ Muestra listado de usuarios
+1. Crea un superuser automáticamente
+2. Crea un usuario normal
+3. Asigna contraseñas seguras
+4. Configura los permisos correctamente
+5. Verifica si ya existen (evita duplicados)
+6. Muestra listado de usuarios
 
-### 🔄 Alternativas para Crear Usuarios
+### Alternativas para Crear Usuarios
 
 #### Opción 2: Django Admin
 
@@ -717,7 +682,7 @@ python manage.py shell
 >>> User.objects.create_user('username', 'email@example.com', 'password')
 ```
 
-### 🔑 Login - Obtener Tokens JWT
+### Login - Obtener Tokens JWT
 
 Después de crear usuarios, puedes autenticarte:
 
@@ -756,7 +721,7 @@ POST /api/v1/auth/login/
 }
 ```
 
-### 📌 Usar Token en Requests
+### Usar Token en Requests
 
 Con el token obtenido, acceder a endpoints:
 
@@ -837,8 +802,8 @@ python create_users.py
 ```
 
 Esto crea automáticamente:
-- ✅ Superuser: `admin` / `Admin123456!`
-- ✅ Usuario Normal: `empleado` / `Usuario123456!`
+- Superuser: `admin` / `Admin123456!`
+- Usuario Normal: `empleado` / `Usuario123456!`
 
 **Alternativa - Método interactivo:**
 
@@ -888,27 +853,27 @@ http://localhost:8000/swagger/
 ## Características del Proyecto
 
 ### Seguridad
-✅ Autenticación JWT
-✅ Control de acceso
+Autenticación JWT
+Control de acceso
 
 ### Auditoría
-✅ Logging automático
-✅ Soft delete
-✅ Historial completo
-✅ Control de cambios
+Logging automático
+Soft delete
+Historial completo
+Control de cambios
 
 ### Funcionalidad
-✅ CRUD automático
-✅ Filtros avanzados
-✅ Ordenamiento dinámico
-✅ Paginación
-✅ Relaciones anidadas
+CRUD automático
+Filtros avanzados
+Ordenamiento dinámico
+Paginación
+Relaciones anidadas
 
 ### Exportación
-✅ CSV
-✅ Excel
-✅ Con filtros
-✅ Auditoría exportable
+CSV
+Excel
+Con filtros
+Auditoría exportable
 
 ---
 
