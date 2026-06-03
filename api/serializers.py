@@ -66,42 +66,77 @@ class DepartamentosSerializer(serializers.ModelSerializer):
 
 
 class CargosSerializer(serializers.ModelSerializer):
+    id_niveles_cargo = NivelCargoSerializer(read_only=True)
+
     class Meta:
         model = Cargos
         fields = '__all__'
 
 
+class EmpleadosSimpleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Empleados
+        fields = ['id_empleados', 'numero_documento', 'primer_nombre', 'primer_apellido', 'email']
+
+
 class EmpleadosSerializer(serializers.ModelSerializer):
+    id_tipos_documento = TipoDocumentoSerializer(read_only=True)
+    id_generos = GeneroSerializer(read_only=True)
+    id_estados_civiles = EstadoCivilSerializer(read_only=True)
+    id_cargos = CargosSerializer(read_only=True)
+    id_departamentos = DepartamentosSerializer(read_only=True)
+
     class Meta:
         model = Empleados
         fields = '__all__'
 
 
 class ContratosSerializer(serializers.ModelSerializer):
+    id_empleados = EmpleadosSerializer(read_only=True)
+    id_tipos_contrato = TipoContratoSerializer(read_only=True)
+    id_estados = EstadoSerializer(read_only=True)
+
     class Meta:
         model = Contratos
         fields = '__all__'
 
 
 class NominaSerializer(serializers.ModelSerializer):
+    id_empleados = EmpleadosSerializer(read_only=True)
+    id_estados = EstadoSerializer(read_only=True)
+
     class Meta:
         model = Nomina
         fields = '__all__'
 
 
 class VacacionesSerializer(serializers.ModelSerializer):
+    id_empleados = EmpleadosSimpleSerializer(read_only=True)
+    id_estados = EstadoSerializer(read_only=True)
+    id_aprobado_por = EmpleadosSimpleSerializer(read_only=True)
+
     class Meta:
         model = Vacaciones
         fields = '__all__'
 
 
 class CapacitacionesSerializer(serializers.ModelSerializer):
+    id_empleados = EmpleadosSimpleSerializer(read_only=True)
+    id_modalidades_capacitacion = ModalidadCapacitacionSerializer(read_only=True)
+    id_estados = EstadoSerializer(read_only=True)
+
     class Meta:
         model = Capacitaciones
         fields = '__all__'
 
 
 class EvaluacionesSerializer(serializers.ModelSerializer):
+    id_empleados = EmpleadosSimpleSerializer(read_only=True)
+    id_evaluador = EmpleadosSimpleSerializer(read_only=True)
+    id_tipos_evaluacion = TipoEvaluacionSerializer(read_only=True)
+    id_resultados_evaluacion = ResultadoEvaluacionSerializer(read_only=True)
+
     class Meta:
         model = Evaluaciones
         fields = '__all__'
+
