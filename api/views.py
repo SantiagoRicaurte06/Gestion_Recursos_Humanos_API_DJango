@@ -4,7 +4,7 @@ from .models import (
     Genero, EstadoCivil, TipoDocumento, NivelCargo, TipoContrato, Estado,
     ModalidadCapacitacion, TipoEvaluacion, ResultadoEvaluacion,
     Departamentos, Cargos, Empleados, Contratos, Nomina, Vacaciones,
-    Capacitaciones, Evaluaciones
+    Capacitaciones, Evaluaciones, AuditLog
 )
 from .serializers import (
     GeneroSerializer, EstadoCivilSerializer, TipoDocumentoSerializer,
@@ -12,7 +12,7 @@ from .serializers import (
     ModalidadCapacitacionSerializer, TipoEvaluacionSerializer,
     ResultadoEvaluacionSerializer, DepartamentosSerializer, CargosSerializer,
     EmpleadosSerializer, ContratosSerializer, NominaSerializer,
-    VacacionesSerializer, CapacitacionesSerializer, EvaluacionesSerializer
+    VacacionesSerializer, CapacitacionesSerializer, EvaluacionesSerializer, AuditLogSerializer
 )
 from .filters import (
     GeneroFilter, EstadoCivilFilter, TipoDocumentoFilter, NivelCargoFilter,
@@ -156,3 +156,14 @@ class EvaluacionesViewSet(ExportMixin, viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_class = EvaluacionesFilter
     ordering_fields = '__all__'
+
+
+class AuditLogViewSet(ExportMixin, viewsets.ReadOnlyModelViewSet):
+    queryset = AuditLog.objects.all()
+    serializer_class = AuditLogSerializer
+    filter_backends = [DjangoFilterBackend]
+    ordering_fields = '__all__'
+
+    def get_queryset(self):
+        return AuditLog.objects.filter(usuario=self.request.user).order_by('-creado_en')
+

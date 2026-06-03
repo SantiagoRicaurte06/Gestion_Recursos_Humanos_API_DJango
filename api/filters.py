@@ -3,7 +3,7 @@ from .models import (
     Genero, EstadoCivil, TipoDocumento, NivelCargo, TipoContrato, Estado,
     ModalidadCapacitacion, TipoEvaluacion, ResultadoEvaluacion,
     Departamentos, Cargos, Empleados, Contratos, Nomina, Vacaciones,
-    Capacitaciones, Evaluaciones
+    Capacitaciones, Evaluaciones, AuditLog
 )
 
 
@@ -220,3 +220,17 @@ class EvaluacionesFilter(django_filters.FilterSet):
             'id_empleados', 'id_evaluador', 'id_tipos_evaluacion',
             'id_resultados_evaluacion', 'activo'
         ]
+
+
+class AuditLogFilter(django_filters.FilterSet):
+    usuario = django_filters.CharFilter(field_name='usuario__username', lookup_expr='icontains')
+    operacion = django_filters.CharFilter(lookup_expr='icontains')
+    modelo = django_filters.CharFilter(lookup_expr='icontains')
+    creado_en = django_filters.DateFilter()
+    creado_en_min = django_filters.DateFilter(field_name='creado_en', lookup_expr='gte')
+    creado_en_max = django_filters.DateFilter(field_name='creado_en', lookup_expr='lte')
+
+    class Meta:
+        model = AuditLog
+        fields = ['usuario', 'operacion', 'modelo', 'creado_en']
+

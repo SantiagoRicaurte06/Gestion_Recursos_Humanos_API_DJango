@@ -3,7 +3,7 @@ from .models import (
     Genero, EstadoCivil, TipoDocumento, NivelCargo, TipoContrato, Estado,
     ModalidadCapacitacion, TipoEvaluacion, ResultadoEvaluacion,
     Departamentos, Cargos, Empleados, Contratos, Nomina, Vacaciones,
-    Capacitaciones, Evaluaciones
+    Capacitaciones, Evaluaciones, AuditLog
 )
 
 class GeneroSerializer(serializers.ModelSerializer):
@@ -139,4 +139,14 @@ class EvaluacionesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Evaluaciones
         fields = '__all__'
+
+
+class AuditLogSerializer(serializers.ModelSerializer):
+    usuario_nombre = serializers.CharField(source='usuario.username', read_only=True)
+
+    class Meta:
+        model = AuditLog
+        fields = '__all__'
+        read_only_fields = '__all__'
+
 

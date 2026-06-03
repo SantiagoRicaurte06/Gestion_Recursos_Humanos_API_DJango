@@ -5,7 +5,7 @@ from .views import (
     TipoContratoViewSet, EstadoViewSet, ModalidadCapacitacionViewSet,
     TipoEvaluacionViewSet, ResultadoEvaluacionViewSet, DepartamentosViewSet,
     CargosViewSet, EmpleadosViewSet, ContratosViewSet, NominaViewSet,
-    VacacionesViewSet, CapacitacionesViewSet, EvaluacionesViewSet
+    VacacionesViewSet, CapacitacionesViewSet, EvaluacionesViewSet, AuditLogViewSet
 )
 from .auth_views import login, refresh_token
 
@@ -28,6 +28,7 @@ router.register (r'nomina', NominaViewSet)
 router.register (r'vacaciones', VacacionesViewSet)
 router.register (r'capacitaciones', CapacitacionesViewSet)
 router.register (r'evaluaciones', EvaluacionesViewSet)
+router.register (r'audit-logs', AuditLogViewSet, basename='audit-log')
 
 urlpatterns = [
     path('auth/login/', login, name='login'),
