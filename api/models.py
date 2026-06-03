@@ -1,6 +1,9 @@
 from django.db import models
+from .managers import SoftDeleteManager
 
 class Genero(models.Model):
+    objects = SoftDeleteManager()
+
     id_generos     = models.AutoField     (primary_key=True)
     nombre         = models.CharField     (max_length=20)
     activo         = models.BooleanField  (default=True)
@@ -15,6 +18,8 @@ class Genero(models.Model):
 
 
 class EstadoCivil(models.Model):
+    objects = SoftDeleteManager()
+
     id_estados_civiles = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=50, unique=True)
     activo = models.BooleanField(default=True)
@@ -29,6 +34,8 @@ class EstadoCivil(models.Model):
 
 
 class TipoDocumento(models.Model):
+    objects = SoftDeleteManager()
+
     id_tipos_documento = models.AutoField(primary_key=True)
     codigo = models.CharField(max_length=10, unique=True)
     nombre = models.CharField(max_length=50)
@@ -44,6 +51,8 @@ class TipoDocumento(models.Model):
 
 
 class NivelCargo(models.Model):
+    objects = SoftDeleteManager()
+
     id_niveles_cargo = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=50, unique=True)
     activo = models.BooleanField(default=True)
@@ -58,6 +67,8 @@ class NivelCargo(models.Model):
 
 
 class TipoContrato(models.Model):
+    objects = SoftDeleteManager()
+
     id_tipos_contrato = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=100, unique=True)
     activo = models.BooleanField(default=True)
@@ -72,6 +83,8 @@ class TipoContrato(models.Model):
 
 
 class Estado(models.Model):
+    objects = SoftDeleteManager()
+
     CONTEXTO_CHOICES = [
         ('CONTRATO', 'Contrato'),
         ('NOMINA', 'Nómina'),
@@ -95,6 +108,8 @@ class Estado(models.Model):
 
 
 class ModalidadCapacitacion(models.Model):
+    objects = SoftDeleteManager()
+
     id_modalidades_capacitacion = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=100, unique=True)
     activo = models.BooleanField(default=True)
@@ -109,6 +124,8 @@ class ModalidadCapacitacion(models.Model):
 
 
 class TipoEvaluacion(models.Model):
+    objects = SoftDeleteManager()
+
     id_tipos_evaluacion = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=100, unique=True)
     activo = models.BooleanField(default=True)
@@ -123,6 +140,8 @@ class TipoEvaluacion(models.Model):
 
 
 class ResultadoEvaluacion(models.Model):
+    objects = SoftDeleteManager()
+
     id_resultados_evaluacion = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=50, unique=True)
     activo = models.BooleanField(default=True)
@@ -136,6 +155,8 @@ class ResultadoEvaluacion(models.Model):
         db_table = 'resultados_evaluacion'
 
 class Departamentos(models.Model):
+    objects = SoftDeleteManager()
+
     id_departamentos = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=100, unique=True)
     descripcion = models.CharField(max_length=200, null=True, blank=True)
@@ -151,6 +172,8 @@ class Departamentos(models.Model):
 
 
 class Cargos(models.Model):
+    objects = SoftDeleteManager()
+
     id_cargos = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=100, unique=True)
     descripcion = models.CharField(max_length=200, null=True, blank=True)
@@ -169,6 +192,8 @@ class Cargos(models.Model):
 
 
 class Empleados(models.Model):
+    objects = SoftDeleteManager()
+
     id_empleados = models.AutoField(primary_key=True)
     id_tipos_documento = models.ForeignKey(TipoDocumento, on_delete=models.PROTECT, db_column='id_tipos_documento')
     numero_documento = models.CharField(max_length=20, unique=True)
@@ -201,6 +226,8 @@ class Empleados(models.Model):
         db_table = 'empleados'
 
 class Contratos(models.Model):
+    objects = SoftDeleteManager()
+
     id_contratos = models.AutoField(primary_key=True)
     id_empleados = models.ForeignKey(Empleados, on_delete=models.PROTECT, db_column='id_empleados')
     id_tipos_contrato = models.ForeignKey(TipoContrato, on_delete=models.PROTECT, db_column='id_tipos_contrato')
@@ -223,6 +250,8 @@ class Contratos(models.Model):
 
 
 class Nomina(models.Model):
+    objects = SoftDeleteManager()
+
     id_nomina = models.AutoField(primary_key=True)
     id_empleados = models.ForeignKey(Empleados, on_delete=models.PROTECT, db_column='id_empleados')
     periodo_inicio = models.DateField()
@@ -255,6 +284,8 @@ class Nomina(models.Model):
 
 
 class Vacaciones(models.Model):
+    objects = SoftDeleteManager()
+
     id_vacaciones = models.AutoField(primary_key=True)
     id_empleados = models.ForeignKey(Empleados, on_delete=models.PROTECT, db_column='id_empleados', related_name='vacaciones')
     fecha_inicio = models.DateField()
@@ -278,6 +309,8 @@ class Vacaciones(models.Model):
 
 
 class Capacitaciones(models.Model):
+    objects = SoftDeleteManager()
+
     id_capacitaciones = models.AutoField(primary_key=True)
     id_empleados = models.ForeignKey(Empleados, on_delete=models.PROTECT, db_column='id_empleados')
     nombre = models.CharField(max_length=200)
@@ -306,6 +339,8 @@ class Capacitaciones(models.Model):
 
 
 class Evaluaciones(models.Model):
+    objects = SoftDeleteManager()
+
     id_evaluaciones = models.AutoField(primary_key=True)
     id_empleados = models.ForeignKey(Empleados, on_delete=models.PROTECT, db_column='id_empleados', related_name='evaluaciones')
     id_evaluador = models.ForeignKey(Empleados, on_delete=models.PROTECT, db_column='id_evaluador', related_name='evaluaciones_realizadas')
