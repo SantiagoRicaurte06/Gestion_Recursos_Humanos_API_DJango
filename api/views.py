@@ -23,7 +23,7 @@ from .filters import (
 )
 from .export_mixin import ExportMixin, CustomDestroyMixin
 
-class GeneroViewSet(ExportMixin, viewsets.ModelViewSet):
+class GeneroViewSet(CustomDestroyMixin, ExportMixin, viewsets.ModelViewSet):
     queryset = Genero.objects.all()
     serializer_class = GeneroSerializer
     filter_backends = [DjangoFilterBackend]
@@ -31,7 +31,7 @@ class GeneroViewSet(ExportMixin, viewsets.ModelViewSet):
     ordering_fields = '__all__'
 
 
-class EstadoCivilViewSet(ExportMixin, viewsets.ModelViewSet):
+class EstadoCivilViewSet(CustomDestroyMixin, ExportMixin, viewsets.ModelViewSet):
     queryset = EstadoCivil.objects.all()
     serializer_class = EstadoCivilSerializer
     filter_backends = [DjangoFilterBackend]
@@ -39,7 +39,7 @@ class EstadoCivilViewSet(ExportMixin, viewsets.ModelViewSet):
     ordering_fields = '__all__'
 
 
-class TipoDocumentoViewSet(ExportMixin, viewsets.ModelViewSet):
+class TipoDocumentoViewSet(CustomDestroyMixin, ExportMixin, viewsets.ModelViewSet):
     queryset = TipoDocumento.objects.all()
     serializer_class = TipoDocumentoSerializer
     filter_backends = [DjangoFilterBackend]
@@ -47,7 +47,7 @@ class TipoDocumentoViewSet(ExportMixin, viewsets.ModelViewSet):
     ordering_fields = '__all__'
 
 
-class NivelCargoViewSet(ExportMixin, viewsets.ModelViewSet):
+class NivelCargoViewSet(CustomDestroyMixin, ExportMixin, viewsets.ModelViewSet):
     queryset = NivelCargo.objects.all()
     serializer_class = NivelCargoSerializer
     filter_backends = [DjangoFilterBackend]
@@ -55,7 +55,7 @@ class NivelCargoViewSet(ExportMixin, viewsets.ModelViewSet):
     ordering_fields = '__all__'
 
 
-class TipoContratoViewSet(ExportMixin, viewsets.ModelViewSet):
+class TipoContratoViewSet(CustomDestroyMixin, ExportMixin, viewsets.ModelViewSet):
     queryset = TipoContrato.objects.all()
     serializer_class = TipoContratoSerializer
     filter_backends = [DjangoFilterBackend]
@@ -63,7 +63,7 @@ class TipoContratoViewSet(ExportMixin, viewsets.ModelViewSet):
     ordering_fields = '__all__'
 
 
-class EstadoViewSet(ExportMixin, viewsets.ModelViewSet):
+class EstadoViewSet(CustomDestroyMixin, ExportMixin, viewsets.ModelViewSet):
     queryset = Estado.objects.all()
     serializer_class = EstadoSerializer
     filter_backends = [DjangoFilterBackend]
@@ -71,7 +71,7 @@ class EstadoViewSet(ExportMixin, viewsets.ModelViewSet):
     ordering_fields = '__all__'
 
 
-class ModalidadCapacitacionViewSet(ExportMixin, viewsets.ModelViewSet):
+class ModalidadCapacitacionViewSet(CustomDestroyMixin, ExportMixin, viewsets.ModelViewSet):
     queryset = ModalidadCapacitacion.objects.all()
     serializer_class = ModalidadCapacitacionSerializer
     filter_backends = [DjangoFilterBackend]
@@ -79,7 +79,7 @@ class ModalidadCapacitacionViewSet(ExportMixin, viewsets.ModelViewSet):
     ordering_fields = '__all__'
 
 
-class TipoEvaluacionViewSet(ExportMixin, viewsets.ModelViewSet):
+class TipoEvaluacionViewSet(CustomDestroyMixin, ExportMixin, viewsets.ModelViewSet):
     queryset = TipoEvaluacion.objects.all()
     serializer_class = TipoEvaluacionSerializer
     filter_backends = [DjangoFilterBackend]
@@ -87,14 +87,14 @@ class TipoEvaluacionViewSet(ExportMixin, viewsets.ModelViewSet):
     ordering_fields = '__all__'
 
 
-class ResultadoEvaluacionViewSet(ExportMixin, viewsets.ModelViewSet):
+class ResultadoEvaluacionViewSet(CustomDestroyMixin, ExportMixin, viewsets.ModelViewSet):
     queryset = ResultadoEvaluacion.objects.all()
     serializer_class = ResultadoEvaluacionSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = ResultadoEvaluacionFilter
     ordering_fields = '__all__'
 
-class DepartamentosViewSet(ExportMixin, viewsets.ModelViewSet):
+class DepartamentosViewSet(CustomDestroyMixin, ExportMixin, viewsets.ModelViewSet):
     queryset = Departamentos.objects.all()
     serializer_class = DepartamentosSerializer
     filter_backends = [DjangoFilterBackend]
@@ -102,7 +102,7 @@ class DepartamentosViewSet(ExportMixin, viewsets.ModelViewSet):
     ordering_fields = '__all__'
 
 
-class CargosViewSet(ExportMixin, viewsets.ModelViewSet):
+class CargosViewSet(CustomDestroyMixin, ExportMixin, viewsets.ModelViewSet):
     queryset = Cargos.objects.all()
     serializer_class = CargosSerializer
     filter_backends = [DjangoFilterBackend]
@@ -110,7 +110,7 @@ class CargosViewSet(ExportMixin, viewsets.ModelViewSet):
     ordering_fields = '__all__'
 
 
-class EmpleadosViewSet(ExportMixin, viewsets.ModelViewSet):
+class EmpleadosViewSet(CustomDestroyMixin, ExportMixin, viewsets.ModelViewSet):
     queryset = Empleados.objects.all()
     serializer_class = EmpleadosSerializer
     filter_backends = [DjangoFilterBackend]
@@ -118,7 +118,7 @@ class EmpleadosViewSet(ExportMixin, viewsets.ModelViewSet):
     ordering_fields = '__all__'
 
 
-class ContratosViewSet(ExportMixin, viewsets.ModelViewSet):
+class ContratosViewSet(CustomDestroyMixin, ExportMixin, viewsets.ModelViewSet):
     queryset = Contratos.objects.all()
     serializer_class = ContratosSerializer
     filter_backends = [DjangoFilterBackend]
@@ -126,7 +126,7 @@ class ContratosViewSet(ExportMixin, viewsets.ModelViewSet):
     ordering_fields = '__all__'
 
 
-class NominaViewSet(ExportMixin, viewsets.ModelViewSet):
+class NominaViewSet(CustomDestroyMixin, ExportMixin, viewsets.ModelViewSet):
     queryset = Nomina.objects.all()
     serializer_class = NominaSerializer
     filter_backends = [DjangoFilterBackend]
@@ -134,7 +134,7 @@ class NominaViewSet(ExportMixin, viewsets.ModelViewSet):
     ordering_fields = '__all__'
 
 
-class VacacionesViewSet(ExportMixin, viewsets.ModelViewSet):
+class VacacionesViewSet(CustomDestroyMixin, ExportMixin, viewsets.ModelViewSet):
     queryset = Vacaciones.objects.all()
     serializer_class = VacacionesSerializer
     filter_backends = [DjangoFilterBackend]
@@ -142,7 +142,7 @@ class VacacionesViewSet(ExportMixin, viewsets.ModelViewSet):
     ordering_fields = '__all__'
 
 
-class CapacitacionesViewSet(ExportMixin, viewsets.ModelViewSet):
+class CapacitacionesViewSet(CustomDestroyMixin, ExportMixin, viewsets.ModelViewSet):
     queryset = Capacitaciones.objects.all()
     serializer_class = CapacitacionesSerializer
     filter_backends = [DjangoFilterBackend]
@@ -150,7 +150,7 @@ class CapacitacionesViewSet(ExportMixin, viewsets.ModelViewSet):
     ordering_fields = '__all__'
 
 
-class EvaluacionesViewSet(ExportMixin, viewsets.ModelViewSet):
+class EvaluacionesViewSet(CustomDestroyMixin, ExportMixin, viewsets.ModelViewSet):
     queryset = Evaluaciones.objects.all()
     serializer_class = EvaluacionesSerializer
     filter_backends = [DjangoFilterBackend]

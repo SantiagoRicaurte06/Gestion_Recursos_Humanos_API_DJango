@@ -108,7 +108,7 @@ class EmpleadosFilter(django_filters.FilterSet):
     numero_documento = django_filters.CharFilter(lookup_expr='icontains')
     primer_nombre = django_filters.CharFilter(lookup_expr='icontains')
     primer_apellido = django_filters.CharFilter(lookup_expr='icontains')
-    email = django_filters.CharFilter(lookup_expr='icontains')
+    email = django_filters.CharFilter(lookup_expr='iexact')
     id_tipos_documento = django_filters.NumberFilter()
     id_generos = django_filters.NumberFilter()
     id_estados_civiles = django_filters.NumberFilter()
