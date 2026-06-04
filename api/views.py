@@ -165,5 +165,7 @@ class AuditLogViewSet(ExportMixin, viewsets.ReadOnlyModelViewSet):
     ordering_fields = '__all__'
 
     def get_queryset(self):
-        return AuditLog.objects.filter(usuario=self.request.user).order_by('-creado_en')
+        if self.request.user.is_authenticated:
+            return AuditLog.objects.filter(usuario=self.request.user).order_by('-creado_en')
+        return AuditLog.objects.none()
 
