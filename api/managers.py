@@ -21,3 +21,5 @@ class SoftDeleteManager(models.Manager):
 
     def deleted(self):
         return SoftDeleteQuerySet(self.model, using=self._db).filter(activo=False)
+
+

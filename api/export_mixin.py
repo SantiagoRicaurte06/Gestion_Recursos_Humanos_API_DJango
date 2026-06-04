@@ -4,6 +4,22 @@ from rest_framework import status
 from .export_utils import export_queryset_to_csv, export_queryset_to_excel
 
 
+class CustomDestroyMixin:
+    """Mixin para retornar JSON personalizado en DELETE"""
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        model_name = instance.__class__.__name__
+        self.perform_destroy(instance)
+        return Response(
+            {
+                'success': True,
+                'message': f'{model_name} eliminado correctamente',
+                'data': None
+            },
+            status=status.HTTP_200_OK
+        )
+
+
 class ExportMixin:
     @action(detail=False, methods=['get'], url_path='export')
     def export(self, request):

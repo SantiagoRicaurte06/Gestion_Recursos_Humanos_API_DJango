@@ -21,7 +21,7 @@ from .filters import (
     CargosFilter, EmpleadosFilter, ContratosFilter, NominaFilter,
     VacacionesFilter, CapacitacionesFilter, EvaluacionesFilter
 )
-from .export_mixin import ExportMixin
+from .export_mixin import ExportMixin, CustomDestroyMixin
 
 class GeneroViewSet(ExportMixin, viewsets.ModelViewSet):
     queryset = Genero.objects.all()
